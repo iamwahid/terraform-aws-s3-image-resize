@@ -1,7 +1,7 @@
 "use strict";
 
 const ImageData   = require("./ImageData");
-const gm = require("gm").subClass({ imageMagick: 'true' });
+const gm = require("gm").subClass({ imageMagick: true });
 // const gm = require("gm");
 const fs = require("fs");
 
