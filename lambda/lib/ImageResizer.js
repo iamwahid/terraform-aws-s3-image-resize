@@ -3,6 +3,7 @@
 const ImageData   = require("./ImageData");
 // const gm = require("gm").subClass({ imageMagick: true });
 const gm = require("gm");
+const fs = require("fs");
 
 const cropSpec = /(\d+)x(\d+)([+-]\d+)?([+-]\d+)?(%)?/;
 
@@ -59,26 +60,38 @@ class ImageResizer {
                 img = img.extent("%[fx:h<w?h:w]", "%[fx:h<w?h:w]", "")
             }
             
-            console.log(img);
-            img.write('/tmp/out.jpg', function (err) {
-                if (err) console.error(err);
+            console.log(img, image);
+            const fname = image.split('/')[image.split('/').length - 1];
+            img.write(`/tmp/${fname}`, function (err) {
+                if (err) reject(err);
                 console.log('Created an image from a Buffer!');
-            });
-
-            img.toBuffer((err, buffer) => {
-                if (err) {
-                    console.error(err)
-                    reject(err);
-                } else {
+                fs.readFile(`/tmp/${fname}`, function (err, data) {
+                    if (err) reject(err);
+                    console.log(data);
                     resolve(new ImageData(
                         image.fileName,
                         image.bucketName,
-                        buffer,
+                        data,
                         image.headers,
                         acl || image.acl
                     ));
-                }
+                });
             });
+
+            // img.toBuffer((err, buffer) => {
+            //     if (err) {
+            //         console.error(err)
+            //         reject(err);
+            //     } else {
+            //         resolve(new ImageData(
+            //             image.fileName,
+            //             image.bucketName,
+            //             buffer,
+            //             image.headers,
+            //             acl || image.acl
+            //         ));
+            //     }
+            // });
         });
     }
 }
