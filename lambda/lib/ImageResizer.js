@@ -54,7 +54,9 @@ class ImageResizer {
                 img = img.setFormat(this.options.format);
             }
             if ("extentSquare" in this.options) {
-                img = img.extent(["%[fx:h<w?h:w]", "%[fx:h<w?h:w]", ""])
+                console.log("extentSquare: " + this.options.extentSquare);
+                img = img.extent("%[fx:h<w?h:w]", "%[fx:h<w?h:w]", "")
+                console.log(img);
             }
 
             img.toBuffer((err, buffer) => {

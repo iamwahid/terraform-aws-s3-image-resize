@@ -56,6 +56,8 @@ class ImageProcessor {
         let promise = Promise.resolve();
         let processedImages = 0;
 
+        console.log(config);
+
         if ( config.exists("backup") ) {
             const backup = config.get("backup");
 
