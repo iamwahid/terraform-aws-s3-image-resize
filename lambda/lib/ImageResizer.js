@@ -57,9 +57,9 @@ class ImageResizer {
             if ("extentSquare" in this.options) {
                 console.log("extentSquare: " + this.options.extentSquare);
                 img = img.extent("%[fx:h<w?h:w]", "%[fx:h<w?h:w]", "")
-                console.log(img);
             }
-
+            
+            console.log(img);
             img.write('/tmp/out.jpg', function (err) {
                 if (err) console.error(err);
                 console.log('Created an image from a Buffer!');
