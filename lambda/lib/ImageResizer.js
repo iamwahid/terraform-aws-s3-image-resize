@@ -61,7 +61,7 @@ class ImageResizer {
             }
             
             console.log(img, image);
-            const fname = image.split('/')[image.split('/').length - 1];
+            const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
             img.write(`/tmp/${fname}`, function (err) {
                 if (err) reject(err);
                 console.log('Created an image from a Buffer!');
