@@ -59,7 +59,7 @@ class ImageResizer {
                 console.log(img);
             }
 
-            img.toBuffer((err, buffer) => {
+            img.toBuffer('jpeg', (err, buffer) => {
                 if (err) {
                     reject(err);
                 } else {
