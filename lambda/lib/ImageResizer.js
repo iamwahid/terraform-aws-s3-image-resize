@@ -60,8 +60,14 @@ class ImageResizer {
                 console.log(img);
             }
 
-            img.toBuffer('jpeg', (err, buffer) => {
+            img.write('/tmp/out.jpg', function (err) {
+                if (err) console.error(err);
+                console.log('Created an image from a Buffer!');
+            });
+
+            img.toBuffer((err, buffer) => {
                 if (err) {
+                    console.error(err)
                     reject(err);
                 } else {
                     resolve(new ImageData(
