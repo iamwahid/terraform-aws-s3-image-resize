@@ -57,7 +57,7 @@ class ImageResizer {
             }
             if ("extentSquare" in this.options) {
                 console.log("extentSquare: " + this.options.extentSquare);
-                img = img.command().out('-extent', '%[fx:h<w?h:w]x%[fx:h<w?h:w]');
+                img = gm(image.data).setFormat('jpeg').command().out('-gravity', 'center').out('-extent', '%[fx:h<w?h:w]x%[fx:h<w?h:w]');
             }
             
             console.log(img, image);
