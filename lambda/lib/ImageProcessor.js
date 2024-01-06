@@ -4,6 +4,7 @@ const ImageArchiver = require("./ImageArchiver");
 const ImageResizer  = require("./ImageResizer");
 const ImageReducer  = require("./ImageReducer");
 const ImageResizerExec = require("./ImageResizerExec");
+const ImageIdentifier = require("./ImageIdentifier");
 
 class ImageProcessor {
 
@@ -133,15 +134,19 @@ class ImageProcessor {
      * @return Promise
      */
     execResizeImage(option, imageData) {
+        const info = new ImageIdentifier(option);
         const resizer = new ImageResizer(option);
         // const resizer = new ImageResizerExec(option);
+        return info.exec(imageData)
+            .then((image) => {
+                console.log(image);
+                return resizer.exec(imageData)
+            })
+            .then((resizedImage) => {
+                const reducer = new ImageReducer(option);
 
-        return resizer.exec(imageData)
-        .then((resizedImage) => {
-            const reducer = new ImageReducer(option);
-
-            return reducer.exec(resizedImage);
-        });
+                return reducer.exec(resizedImage);
+            });
     }
 
     /**

@@ -58,38 +58,35 @@ class ImageResizer {
             if ("extentSquare" in this.options) {
                 console.log("extentSquare: " + this.options.extentSquare);
                 // img = gm(image.data).command('').setFormat('jpeg').gravity(this.options.gravity).out('-extent', '%[fx:h<w?h:w]x%[fx:h<w?h:w]');
-                let w, h, n;
-                gm(image.data).identify("%w %h", function (err, format) {
-                    if (err) console.log(err)
-                    console.log(format)
-                    w = Number(format.split(' ')[0])
-                    h = Number(format.split(' ')[1])
-                    n = w;
-                    if (h < n) {
-                        n = h;
-                    }
-                    img = gm(image.data).setFormat('jpeg').geometry(`${n}x${n}^`).gravity('center').extent(n, n);
-                    console.log(img)
+                let n;
+                let w = Number(image.headers.Metadata.width);
+                let h = Number(image.headers.Metadata.height);
+                n = w;
+                if (h < n) {
+                    n = h;
+                }
 
-                    const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
-                    console.log(image.data);
-                    console.log(`/tmp/${fname}`);
-                    img.write(`/tmp/${fname}`, function (err1) {
-                        if (err1) return reject(err1);
-                        console.log('Created an image from a Buffer!');
-                        fs.readFile(`/tmp/${fname}`, function (err2, data) {
-                            if (err2) return reject(err2);
-                            console.log(data);
-                            return resolve(new ImageData(
-                                image.fileName,
-                                image.bucketName,
-                                data,
-                                image.headers,
-                                acl || image.acl
-                            ));
-                        });
+                img = img.setFormat('jpeg').extent(n, n);
+                console.log(img)
+
+                const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
+                console.log(image.data);
+                console.log(`/tmp/${fname}`);
+                img.write(`/tmp/${fname}`, function (err1) {
+                    if (err1) return reject(err1);
+                    console.log('Created an image from a Buffer!');
+                    fs.readFile(`/tmp/${fname}`, function (err2, data) {
+                        if (err2) return reject(err2);
+                        console.log(data);
+                        return resolve(new ImageData(
+                            image.fileName,
+                            image.bucketName,
+                            data,
+                            image.headers,
+                            acl || image.acl
+                        ));
                     });
-                })
+                });
             } else {
                 img.toBuffer((err, buffer) => {
                     if (err) {
