@@ -34,38 +34,41 @@ class ImageResizerExec {
         return new Promise((resolve, reject) => {
             console.log("Resizing to: " + (this.options.directory || "in-place"));
             const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
-            fs.writeFileSync(`/tmp/source-${fname}`, image.data);
-
-            let command = []
-            command.push('/opt/bin/magick')
-            command.push(`/tmp/source-${fname}`)
-            command.push('-gravity center')
-            command.push('-extent "%[fx:h<w?h:w]x%[fx:h<w?h:w]"')
-            command.push(`/tmp/${fname}`)
-            command = command.join(' ')
-            console.log(command)
-
-            exec(command, (err, stdout, stderr) => {
-                if (err) {
-                    console.log(`${err} ${stdout} ${stderr}`)
-                    reject(err)
-                } else {
-                    console.log(`${stdout}`)
-                    console.log(image);
-                    fs.readFile(`/tmp/${fname}`, function (err, data) {
-                        if (err) return reject(err);
-                        console.log(data);
-                        return resolve(new ImageData(
-                            image.fileName,
-                            image.bucketName,
-                            data,
-                            image.headers,
-                            acl || image.acl
-                        ));
-                    });
+            fs.writeFile(`/tmp/source-${fname}`, image.data, function(err) {
+                if(err) {
+                    return reject(err);
                 }
-            })
-            
+                console.log("The file was saved!");
+                let command = []
+                command.push('magick')
+                command.push(`/tmp/source-${fname}`)
+                command.push('-gravity center')
+                command.push('-extent "%[fx:h<w?h:w]x%[fx:h<w?h:w]"')
+                command.push(`/tmp/${fname}`)
+                command = command.join(' ')
+                console.log(command)
+
+                exec(command, (err, stdout, stderr) => {
+                    if (err) {
+                        console.log(`${err} ${stdout} ${stderr}`)
+                        reject(err)
+                    } else {
+                        console.log(`${stdout}`)
+                        console.log(image);
+                        fs.readFile(`/tmp/${fname}`, function (err, data) {
+                            if (err) return reject(err);
+                            console.log(data);
+                            return resolve(new ImageData(
+                                image.fileName,
+                                image.bucketName,
+                                data,
+                                image.headers,
+                                acl || image.acl
+                            ));
+                        });
+                    }
+                })
+            }); 
 
         });
     }
