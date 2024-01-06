@@ -3,6 +3,7 @@
 const ImageArchiver = require("./ImageArchiver");
 const ImageResizer  = require("./ImageResizer");
 const ImageReducer  = require("./ImageReducer");
+const ImageResizerExec = require("./ImageResizerExec");
 
 class ImageProcessor {
 
@@ -132,7 +133,8 @@ class ImageProcessor {
      * @return Promise
      */
     execResizeImage(option, imageData) {
-        const resizer = new ImageResizer(option);
+        // const resizer = new ImageResizer(option);
+        const resizer = new ImageResizerExec(option);
 
         return resizer.exec(imageData)
         .then((resizedImage) => {
