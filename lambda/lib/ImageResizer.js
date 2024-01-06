@@ -1,8 +1,8 @@
 "use strict";
 
 const ImageData   = require("./ImageData");
-const gm = require("gm").subClass({ imageMagick: '7+' });
-// const gm = require("gm");
+// const gm = require("gm").subClass({ imageMagick: '7+' });
+const gm = require("gm");
 const fs = require("fs");
 
 const cropSpec = /(\d+)x(\d+)([+-]\d+)?([+-]\d+)?(%)?/;
