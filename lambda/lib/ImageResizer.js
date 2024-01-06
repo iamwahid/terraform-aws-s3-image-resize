@@ -1,7 +1,7 @@
 "use strict";
 
 const ImageData   = require("./ImageData");
-const gm = require("gm").subClass({ imageMagick: true });
+const gm = require("gm").subClass({ imageMagick: '7+' });
 // const gm = require("gm");
 const fs = require("fs");
 
@@ -72,11 +72,11 @@ class ImageResizer {
                     console.log(img)
 
                     const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
-                    img.write(`/tmp/${fname}`, function (err) {
-                        if (err) return reject(err);
+                    img.write(`/tmp/${fname}`, function (err1) {
+                        if (err1) return reject(err1);
                         console.log('Created an image from a Buffer!');
-                        fs.readFile(`/tmp/${fname}`, function (err, data) {
-                            if (err) return reject(err);
+                        fs.readFile(`/tmp/${fname}`, function (err2, data) {
+                            if (err2) return reject(err2);
                             console.log(data);
                             return resolve(new ImageData(
                                 image.fileName,
