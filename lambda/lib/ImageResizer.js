@@ -57,10 +57,21 @@ class ImageResizer {
             }
             if ("extentSquare" in this.options) {
                 console.log("extentSquare: " + this.options.extentSquare);
-                img = gm(image.data).command('').setFormat('jpeg').gravity(this.options.gravity).out('-extent', '%[fx:h<w?h:w]x%[fx:h<w?h:w]');
+                // img = gm(image.data).command('').setFormat('jpeg').gravity(this.options.gravity).out('-extent', '%[fx:h<w?h:w]x%[fx:h<w?h:w]');
+                let w, h, n;
+                gm(image.data).identify("%w %h", function (err, format) {
+                    if (err) console.log(err)
+                    console.log(format)
+                    w = Number(format.split(' ')[0])
+                    h = Number(format.split(' ')[1])
+                    n = w;
+                    if (h < n) {
+                        n = h;
+                    }
+                    img = gm(image.data).setFormat('jpeg').gravity('center').extent(n, n, '');
+                })
+
             }
-            
-            console.log(img, image);
             const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
             img.write(`/tmp/${fname}`, function (err) {
                 if (err) return reject(err);

@@ -34,6 +34,7 @@ class ImageResizerExec {
         return new Promise((resolve, reject) => {
             console.log("Resizing to: " + (this.options.directory || "in-place"));
             const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
+            console.log(image.data);
             fs.writeFile(`/tmp/source-${fname}`, image.data, function(err) {
                 if(err) {
                     return reject(err);

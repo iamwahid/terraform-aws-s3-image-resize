@@ -133,8 +133,8 @@ class ImageProcessor {
      * @return Promise
      */
     execResizeImage(option, imageData) {
-        // const resizer = new ImageResizer(option);
-        const resizer = new ImageResizerExec(option);
+        const resizer = new ImageResizer(option);
+        // const resizer = new ImageResizerExec(option);
 
         return resizer.exec(imageData)
         .then((resizedImage) => {
