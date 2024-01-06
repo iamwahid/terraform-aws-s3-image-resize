@@ -68,10 +68,12 @@ class ImageResizer {
                     if (h < n) {
                         n = h;
                     }
-                    img = gm(image.data).setFormat('jpeg').gravity('center').crop(n, n);
+                    img = gm(image.data).geometry(this.options.size.toString()).crop(n, n);
                     console.log(img)
 
                     const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
+                    console.log(image.data);
+                    console.log(`/tmp/${fname}`);
                     img.write(`/tmp/${fname}`, function (err1) {
                         if (err1) return reject(err1);
                         console.log('Created an image from a Buffer!');
