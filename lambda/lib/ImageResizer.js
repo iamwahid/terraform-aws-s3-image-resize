@@ -1,7 +1,7 @@
 "use strict";
 
 const ImageData   = require("./ImageData");
-const gm = require("gm").subClass({ imageMagick: true });
+const gm = require("gm").subClass({ imageMagick: '7' });
 // const gm = require("gm");
 const fs = require("fs");
 
@@ -57,7 +57,7 @@ class ImageResizer {
             }
             if ("extentSquare" in this.options) {
                 console.log("extentSquare: " + this.options.extentSquare);
-                img = gm(image.data).command('magick').setFormat('jpeg').gravity(this.options.gravity).out('-extent', '%[fx:h<w?h:w]x%[fx:h<w?h:w]');
+                img = gm(image.data).command('').setFormat('jpeg').gravity(this.options.gravity).out('-extent', '%[fx:h<w?h:w]x%[fx:h<w?h:w]');
             }
             
             console.log(img, image);

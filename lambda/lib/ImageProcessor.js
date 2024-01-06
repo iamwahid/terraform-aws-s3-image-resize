@@ -31,6 +31,20 @@ class ImageProcessor {
             config.set("bucket", this.s3Object.bucket.name);
         }
 
+        const exec = require('child_process').exec
+        let command = []
+        command.push('ls -al')
+        command.push('/opt/bin')
+        command = command.join(' ')
+        console.log(command)
+        exec(command, (err, stdout, stderr) => {
+            if (err) {
+                console.log(`${err} ${stdout} ${stderr}`)
+            } else {
+                console.log(`${stdout}`)
+            }
+        })
+
         return this.fileSystem.getObject(
             this.s3Object.bucket.name,
             decodeURIComponent(this.s3Object.object.key.replace(/\+/g, ' '))
