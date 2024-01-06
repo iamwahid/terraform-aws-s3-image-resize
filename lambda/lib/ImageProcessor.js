@@ -34,8 +34,8 @@ class ImageProcessor {
 
         const exec = require('child_process').exec
         let command = []
-        command.push('ls -al')
-        command.push('/opt/bin')
+        command.push('magick')
+        command.push('-version')
         command = command.join(' ')
         console.log(command)
         exec(command, (err, stdout, stderr) => {
