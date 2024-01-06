@@ -68,7 +68,7 @@ class ImageResizer {
                     if (h < n) {
                         n = h;
                     }
-                    img = gm(image.data).geometry(this.options.size.toString()).crop(n, n);
+                    img = gm(image.data).geometry(`${n}x${n}`).gravity('center').crop(n, n);
                     console.log(img)
 
                     const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
