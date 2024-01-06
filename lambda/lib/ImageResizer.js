@@ -63,12 +63,12 @@ class ImageResizer {
             console.log(img, image);
             const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
             img.write(`/tmp/${fname}`, function (err) {
-                if (err) reject(err);
+                if (err) return reject(err);
                 console.log('Created an image from a Buffer!');
                 fs.readFile(`/tmp/${fname}`, function (err, data) {
-                    if (err) reject(err);
+                    if (err) return reject(err);
                     console.log(data);
-                    resolve(new ImageData(
+                    return resolve(new ImageData(
                         image.fileName,
                         image.bucketName,
                         data,
