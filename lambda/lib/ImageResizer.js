@@ -69,40 +69,40 @@ class ImageResizer {
                         n = h;
                     }
                     img = gm(image.data).setFormat('jpeg').gravity('center').extent(n, n, '');
+
+                    const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
+                    img.write(`/tmp/${fname}`, function (err) {
+                        if (err) return reject(err);
+                        console.log('Created an image from a Buffer!');
+                        fs.readFile(`/tmp/${fname}`, function (err, data) {
+                            if (err) return reject(err);
+                            console.log(data);
+                            return resolve(new ImageData(
+                                image.fileName,
+                                image.bucketName,
+                                data,
+                                image.headers,
+                                acl || image.acl
+                            ));
+                        });
+                    });
                 })
-
-            }
-            const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
-            img.write(`/tmp/${fname}`, function (err) {
-                if (err) return reject(err);
-                console.log('Created an image from a Buffer!');
-                fs.readFile(`/tmp/${fname}`, function (err, data) {
-                    if (err) return reject(err);
-                    console.log(data);
-                    return resolve(new ImageData(
-                        image.fileName,
-                        image.bucketName,
-                        data,
-                        image.headers,
-                        acl || image.acl
-                    ));
+            } else {
+                img.toBuffer((err, buffer) => {
+                    if (err) {
+                        console.error(err)
+                        reject(err);
+                    } else {
+                        resolve(new ImageData(
+                            image.fileName,
+                            image.bucketName,
+                            buffer,
+                            image.headers,
+                            acl || image.acl
+                        ));
+                    }
                 });
-            });
-
-            // img.toBuffer((err, buffer) => {
-            //     if (err) {
-            //         console.error(err)
-            //         reject(err);
-            //     } else {
-            //         resolve(new ImageData(
-            //             image.fileName,
-            //             image.bucketName,
-            //             buffer,
-            //             image.headers,
-            //             acl || image.acl
-            //         ));
-            //     }
-            // });
+            }
         });
     }
 }
