@@ -68,7 +68,8 @@ class ImageResizer {
                     if (h < n) {
                         n = h;
                     }
-                    img = gm(image.data).setFormat('jpeg').gravity('center').extent(n, n, '');
+                    img = gm(image.data).setFormat('jpeg').gravity('center').out('-extent', `${n}x${n}`);
+                    console.log(img)
 
                     const fname = image.fileName.split('/')[image.fileName.split('/').length - 1];
                     img.write(`/tmp/${fname}`, function (err) {
